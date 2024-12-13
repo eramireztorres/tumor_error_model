@@ -108,4 +108,7 @@ python src/scripts/run_plot_bayesian.py --file DEGT0 --individual 1 --lh_model L
 If the results file is located elsewhere or uses a custom name, specify the full path to the joblib file:
 ```bash
 python src/scripts/run_plot_bayesian.py --joblib_path data/bayes_results_DEGT0_1_LhNormal_b=1.0.joblib
-``
+```
+
+## License
+Tumor Growth Model Likelihood Comparison is licensed under the MIT License.
