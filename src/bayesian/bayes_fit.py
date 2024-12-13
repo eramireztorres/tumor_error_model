@@ -28,13 +28,23 @@ def HDI_from_MCMC(posterior_samples, credible_mass=0.95):
     HDImax = sorted_points[ciWidth.index(min(ciWidth)) + ciIdxInc]
     return [HDImin, HDImax]
 
+# def get_trajectories(chain, model, t):
+#     if len(chain.shape) != 2 or chain.shape[1] != len(t):
+#         raise ValueError("Invalid dimensions for chain or time vector.")
+#     chain_len = len(chain)
+#     ys_simul = np.zeros((chain_len, len(t)))
+#     for k in range(chain_len):
+#         ys_simul[k, :] = model.simulate_theta(t, chain[k, :])[:len(t)]
+#     return ys_simul
+
+
 def get_trajectories(chain, model, t):
-    if len(chain.shape) != 2 or chain.shape[1] != len(t):
-        raise ValueError("Invalid dimensions for chain or time vector.")
     chain_len = len(chain)
-    ys_simul = np.zeros((chain_len, len(t)))
-    for k in range(chain_len):
-        ys_simul[k, :] = model.simulate_theta(t, chain[k, :])[:len(t)]
+    ys_simul = np.zeros((chain_len,len(t)))
+    for k in range(chain_len): 
+        p = chain[k,:]
+        y_simul = model.simulate_theta(t,p)[:len(t)] 
+        ys_simul[k,:] = y_simul 
     return ys_simul
 
 def get_bound_trajectories(all_traj, credible_mass=0.95):
@@ -71,6 +81,42 @@ class DramFitter(AbstractBayesFitter):
     def log_prior(self, theta):
         p_prior_vector = [prior_fn(th) for prior_fn, th in zip(self.prior, theta)]
         return np.log(np.prod([max(p, 1e-9) for p in p_prior_vector]))
+    
+    # def log_prior(self, theta, prior_funs):
+    #     p_prior_vector = [ prior_funs[i](th) for i,th in enumerate(theta)]
+    #     return np.log(np.prod(np.double(p_prior_vector)))
+    
+    def process(self, tlong=np.array([0])):
+        dram_results = self.results['dram_results'] 
+        chain = dram_results['chain']
+        burnin = int(dram_results['nsimu']*1/2)
+        chain=chain[burnin:, :]
+        
+        sschain = dram_results['sschain']
+        sschain=sschain[burnin:, :]
+        min_index=np.argmin(sschain)
+        MAP = chain[min_index]
+        y_map = self.LH_model.model.simulate_theta(self.LH_model.t, MAP)
+        
+        theta_mean = np.mean(chain,axis=0)
+        theta_credible_intervals = [HDI_from_MCMC(th) for th in np.transpose(chain)]
+        
+        all_trajectories = get_trajectories(chain, self.LH_model.model, self.LH_model.t)
+        [y_dw, y_up, y_mean] = get_bound_trajectories(all_trajectories)
+        
+        dic = get_dic(chain, self.LH_model)
+        
+        self.results['chain'] = chain
+        self.results['sschain'] = sschain
+        self.results['map'] = MAP
+        self.results['y_map'] = y_map
+        self.results['theta_mean'] =theta_mean
+        self.results['theta_credible_intervals'] = theta_credible_intervals
+        self.results['all_trajectories'] = all_trajectories
+        self.results['y_mean'] = y_mean
+        self.results['y_up'] = y_up
+        self.results['y_dw'] = y_dw
+        self.results['dic'] = dic
 
     def fit(self, temp=1):
         mcstat = MCMC()
