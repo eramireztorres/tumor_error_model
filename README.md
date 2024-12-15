@@ -28,7 +28,7 @@ Follow these steps to set up the environment and run the provided scripts:
 ### Step 1: Clone the Repository
 Clone the repository to your local machine:
 ```bash
-git clone https://github.com/eramireztorres/tumor-error-model.git
+git clone https://github.com/eramireztorres/tumor_error_model.git
 cd tumor_error_model
 ```
 
@@ -55,7 +55,7 @@ The first step is to perform Maximum Likelihood Estimation (MLE) on the tumor gr
 
 #### Example Command:
 ```bash
-python src/scripts/run_mle.py --file DEGT0.txt --individual 1 --lh_model LhNormal --theta_limits "[[0,10],[500,10000],[200, 600],[10,500]]" --theta_names "'r', 'K', 'V(0)', 'sigma'"
+python rc/scripts/run_mle.py --file DEGT0.txt --individual 1 --lh_model LhNormal --init_theta "[[0,10],[500,10000],[200, 600],[10,500]]" --theta_names "'r', 'K', 'V(0)', 'sigma'"
 ```
 
 #### Explanation of Arguments:
@@ -77,7 +77,7 @@ After obtaining the MLE results, run Bayesian fitting using the `run_bayesian.py
 
 #### Example Command:
 ```bash
-python src/scripts/run_bayesian.py --file DEGT0.txt --individual 1 --lh_model LhNormal --maxiter 50000 --b_values 1 0.02 0.04 0.08 0.1 0.35 0.5 0.7 --n_temperatures 15 --ti_n 1
+python src/scripts/run_bayesian.py --file DEGT0.txt --individual 1 --lh_model LhNormal --theta_limits "[[0,10],[500,10000],[200, 600],[10,500]]" --theta_names "'r', 'K', 'V(0)', 'sigma'" --b_values 1 0.02 0.04 0.08 0.1 0.35 0.5 0.7 --n_temperatures 15 --ti_n 1
 ```
 
 #### Explanation of Arguments:
