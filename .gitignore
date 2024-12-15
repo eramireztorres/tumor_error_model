@@ -1,0 +1,61 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Install logs and databases
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test artifacts
+.coverage
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+
+# MyPy and static analysis
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.swn.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# MacOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+
+# Docker files
+*.dockerfile
+
+# Logs and other runtime artifacts
+*.log
+*.out
+*.err
+
+# Sensitive files
+*.key
+*.pem
+*.pfx

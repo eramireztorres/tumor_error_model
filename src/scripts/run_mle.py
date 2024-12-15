@@ -86,7 +86,7 @@ def main():
         # Add other models as needed
     }
     
-
+   
     # Prepare initial parameters
     # init_theta = [[0, 1], [y[-1], y[-1] * 3], [y[0] - 0.3 * y[0], y[0] + 0.3 * y[0]], [95, 105]]
     
