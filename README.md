@@ -55,7 +55,7 @@ The first step is to perform Maximum Likelihood Estimation (MLE) on the tumor gr
 
 #### Example Command:
 ```bash
-python src/scripts/run_mle.py --file DEGT0.txt --individual 1 --lh_model LhNormal --init_theta "[[0,10],[500,10000],[200, 600],[10,500]]" --theta_names "'r', 'K', 'V(0)', 'sigma'"
+python src/scripts/run_mle.py --file DEGT0.txt --individual 1 --lh_model LhNormal --theta_limits "[[0,10],[500,10000],[200, 600],[10,500]]" --theta_names "'r', 'K', 'V(0)', 'sigma'"
 ```
 
 #### Explanation of Arguments:
